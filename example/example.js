@@ -1,35 +1,6 @@
-var MbusMaster = require('../index.js');
+var mbus = require('../index.js');
 
-/*
-var mbusOptions = {
-    host: '127.0.0.1',
-    port: port,
-    autoConnect: true
-};
-*/
-var mbusOptions = {
-    serialPort: 'COM9',
-    serialBaudRate: 2400,
-    autoConnect: true,
-    // timeout: 3000 // Use this if a custom timeout is needed
-};
+var buf = Buffer.from('682f2f6808017201309616ac484216d60000000c1405000000046d0c0bab2b426c00004c140000000042ec7ec1210f40010100ea16', 'hex');
+const json = mbus.mbusParse(buf);
 
-var mbusMaster = new MbusMaster(mbusOptions);
-
-if (!mbusMaster.connect()) {
-    console.log('Connection failed.');
-    process.exit();
-}
-
-// request for data from devide with ID 1
-mbusMaster.getData(1, function(err, data) {
-    console.log('err: ' + err);
-    console.log('data: ' + JSON.stringify(data, null, 2));
-
-    mbusMaster.scanSecondary(function(err, data) {
-        console.log('err: ' + err);
-        console.log('data: ' + JSON.stringify(data, null, 2));
-
-        mbusMaster.close();
-    });
-});
+console.log(JSON.stringify(JSON.parse(json), null, 2));
